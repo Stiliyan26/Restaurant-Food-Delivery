@@ -24,6 +24,7 @@ export default function RootLayout({
         <Notification />
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   )

@@ -5,9 +5,9 @@ import CartIcon from './CartIcon';
 import Image from 'next/image';
 
 const links = [
-  { id: 1, title: 'Hompage' },
-  { id: 2, title: 'Menu' },
-  { id: 3, title: 'Contact' },
+  { id: 1, title: 'hompage' },
+  { id: 2, title: 'menu' },
+  { id: 3, title: 'contact' },
 ];
 
 const Navbar = () => {
