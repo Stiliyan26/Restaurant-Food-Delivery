@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Menu from './Menu';
 import CartIcon from './CartIcon';
 import Image from 'next/image';
+import UserLinks from './UserLinks';
 
 const links = [
   { id: 1, title: 'hompage' },
@@ -11,8 +12,6 @@ const links = [
 ];
 
 const Navbar = () => {
-  const user = false;
-
   const linksMapped = links.map(item => (
     <Link
       key={item.id}
@@ -42,11 +41,8 @@ const Navbar = () => {
           <Image src="/phone.png" alt='' width={20} height={20} />
           <span>123 458 78</span>
         </div>
-        {!user
-            ? <Link href='/login'>Login</Link>
-            : <Link href='/orders'>Orders</Link>
-        }
-
+        
+        <UserLinks />
         <CartIcon />
       </div>
     </div>
