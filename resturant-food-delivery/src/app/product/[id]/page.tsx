@@ -1,10 +1,21 @@
-import { singleProduct } from "@/data";
 import React from "react"
 import Image from "next/image";
 import Price from "@/components/Price";
-const SingleProduct = () => {
+import { getData } from "@/services/requester";
+import { ProductType } from "@/types/types";
+import DeleteButton from "@/components/DeleteButton";
+
+type Params = {
+  params: {
+    id: string
+  }
+}
+
+const SingleProduct: React.FC<Params> = async ({ params }) => {
+  const singleProduct: ProductType = await getData(`products/${params.id}`);
+
   return (
-    <div className="p-4 lg:px-20 xl:px-40 h-screen flex flex-col justify-around text-red-500 md:flex-row md:gap-8 md:items-center">
+    <div className="p-4 lg:px-20 xl:px-40 h-screen flex flex-col justify-around text-red-500 md:flex-row md:gap-8 md:items-center relative">
       {/* IMAGE CONTIANER */}
       {singleProduct.img && (
         <div className="relative w-full h-1/2 md:h-[70%]">
@@ -22,12 +33,10 @@ const SingleProduct = () => {
           {singleProduct.title}
         </h1>
         <p>{singleProduct.desc}</p>
-        <Price
-          price={singleProduct.price}
-          id={singleProduct.id}
-          options={singleProduct.options}
-        />
+        <Price product={singleProduct} />
       </div>
+
+      <DeleteButton id={singleProduct.id} />
     </div>
   )
 }
