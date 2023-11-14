@@ -3,20 +3,18 @@ import { NextRequest, NextResponse } from "next/server";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-type Params = {
-  params: {
-    orderId: string
-  }
-}
-
-export const POST = async (request: NextRequest, { params }: Params) => {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { orderId: string } }
+) {
   const { orderId } = params;
 
   const order = await prisma.order.findUnique({
     where: {
-      id: orderId
-    }
-  })
+      id: orderId,
+    },
+  });
+
   if (order) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: 100 * 100,
@@ -28,19 +26,18 @@ export const POST = async (request: NextRequest, { params }: Params) => {
 
     await prisma.order.update({
       where: {
-        id: orderId
+        id: orderId,
       },
-      data: {
-        intent_id: paymentIntent.id
-      }
-    })
+      data: { intent_id: paymentIntent.id },
+    });
 
-    return new NextResponse(JSON.stringify({ clientSecret: paymentIntent.client_secret }), {
-      status: 200
-    });
-  } else {
-    return new NextResponse(JSON.stringify({ message: "Order not found!" }), {
-      status: 404
-    });
+    return new NextResponse(
+      JSON.stringify({ clientSecret: paymentIntent.client_secret }),
+      { status: 200 }
+    );
   }
+  return new NextResponse(
+    JSON.stringify({ message:"Order not found!" }),
+    { status: 404 }
+  );
 }

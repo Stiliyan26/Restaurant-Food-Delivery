@@ -11,17 +11,17 @@ const CartPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    useCartStore.persist.rehydrate(); 
-   }, [])
+    useCartStore.persist.rehydrate();
+  }, [])
 
-   const handleCheckout = async () => {
+  const handleCheckout = async () => {
     if (!session) {
       router.push("/")
     } else {
       try {
         const res = await fetch("http://localhost:3000/api/orders", {
           method: "POST",
-          headers: {"Content-type": "application/json"},
+          headers: { "Content-type": "application/json" },
           body: JSON.stringify({
             price: totalPrice,
             products,
@@ -30,14 +30,14 @@ const CartPage = () => {
           })
         });
 
-        const data = await res.json();  
+        const data = await res.json();
         router.push(`/pay/${data.id}`);
       } catch (error) {
         console.error(error);
       }
     }
-   }
-  
+  }
+
   return (
     <div className="h-[calc(100vh-6rem)] md:h-[100vh-9rem] flex flex-col text-red-500 lg:flex-row">
       {/* PRODUCT CONTAINER */}
